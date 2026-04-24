@@ -8,9 +8,9 @@ import {
 } from "convex/react";
 import { api } from "../convex/_generated/api";
 import Link from "next/link";
-import { SignUpButton } from "@clerk/nextjs";
-import { SignInButton } from "@clerk/nextjs";
 import { UserButton } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Home() {
   return (
@@ -27,29 +27,23 @@ export default function Home() {
           <Content />
         </Authenticated>
         <Unauthenticated>
-          <SignInForm />
+          <UnauthenticatedRedirect />
         </Unauthenticated>
       </main>
     </>
   );
 }
 
-function SignInForm() {
-  return (
-    <div className="flex flex-col gap-8 w-96 mx-auto">
-      <p>Log in to see the numbers</p>
-      <SignInButton mode="modal">
-        <button className="bg-foreground text-background px-4 py-2 rounded-md">
-          Sign in
-        </button>
-      </SignInButton>
-      <SignUpButton mode="modal">
-        <button className="bg-foreground text-background px-4 py-2 rounded-md">
-          Sign up
-        </button>
-      </SignUpButton>
-    </div>
-  );
+function UnauthenticatedRedirect() {
+  const hasSuperAdmin = useQuery(api.users.hasSuperAdmin);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (hasSuperAdmin === undefined) return;
+    router.replace(hasSuperAdmin ? "/sign-in" : "/sign-up");
+  }, [hasSuperAdmin, router]);
+
+  return null;
 }
 
 function Content() {

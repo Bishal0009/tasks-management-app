@@ -9,4 +9,14 @@ export default defineSchema({
   numbers: defineTable({
     value: v.number(),
   }),
+  users: defineTable({
+    clerkId: v.string(),
+    email: v.string(),
+    name: v.optional(v.string()),
+    imageUrl: v.optional(v.string()),
+    role: v.union(v.literal("super_admin"), v.literal("task_manager")),
+    createdAt: v.number(),
+  })
+    .index("by_clerk_id", ["clerkId"])
+    .index("by_role", ["role"]),
 });
