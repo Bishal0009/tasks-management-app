@@ -8,7 +8,9 @@ export default defineSchema({
     name: v.optional(v.string()),
     imageUrl: v.optional(v.string()),
     createdAt: v.number(),
-  }).index("by_clerk_id", ["clerkId"]),
+  })
+    .index("by_clerk_id", ["clerkId"])
+    .index("by_email", ["email"]),
 
   workspaces: defineTable({
     name: v.string(),
@@ -30,4 +32,26 @@ export default defineSchema({
     .index("by_workspace", ["workspaceId"])
     .index("by_user", ["userId"])
     .index("by_workspace_and_user", ["workspaceId", "userId"]),
+
+  invitations: defineTable({
+    workspaceId: v.id("workspaces"),
+    invitedEmail: v.string(),
+    invitedBy: v.id("users"),
+    token: v.string(),
+    role: v.union(
+      v.literal("admin"),
+      v.literal("member"),
+      v.literal("viewer")
+    ),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("accepted"),
+      v.literal("revoked")
+    ),
+    expiresAt: v.number(),
+    createdAt: v.number(),
+  })
+    .index("by_token", ["token"])
+    .index("by_workspace_and_status", ["workspaceId", "status"])
+    .index("by_workspace_and_email_and_status", ["workspaceId", "invitedEmail", "status"]),
 });
