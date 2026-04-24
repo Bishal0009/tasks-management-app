@@ -15,9 +15,7 @@ export default function Home() {
       </header>
       <main className="p-8 flex flex-col gap-8">
         <Authenticated>
-          <div className="max-w-lg mx-auto">
-            <p>App content goes here.</p>
-          </div>
+          <AuthenticatedHome />
         </Authenticated>
         <Unauthenticated>
           <UnauthenticatedRedirect />
@@ -27,14 +25,30 @@ export default function Home() {
   );
 }
 
-function UnauthenticatedRedirect() {
-  const hasSuperAdmin = useQuery(api.users.hasSuperAdmin);
+function AuthenticatedHome() {
+  const workspaces = useQuery(api.workspaces.listMine);
   const router = useRouter();
 
   useEffect(() => {
-    if (hasSuperAdmin === undefined) return;
-    router.replace(hasSuperAdmin ? "/sign-in" : "/sign-up");
-  }, [hasSuperAdmin, router]);
+    if (workspaces === undefined) return; // still loading
+    if (workspaces.length === 0) router.replace("/onboarding");
+  }, [workspaces, router]);
+
+  if (!workspaces || workspaces.length === 0) return null;
+
+  return (
+    <div className="max-w-lg mx-auto">
+      <p>App content goes here.</p>
+    </div>
+  );
+}
+
+function UnauthenticatedRedirect() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace("/sign-in");
+  }, [router]);
 
   return null;
 }
