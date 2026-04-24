@@ -1,4 +1,4 @@
-import { query, internalMutation } from "./_generated/server";
+import { internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 
 export const upsertFromClerk = internalMutation({
@@ -21,28 +21,14 @@ export const upsertFromClerk = internalMutation({
         imageUrl: args.imageUrl,
       });
     } else {
-      const firstUser = await ctx.db.query("users").take(1);
-      const role = firstUser.length === 0 ? "super_admin" : "task_manager";
       await ctx.db.insert("users", {
         clerkId: args.clerkId,
         email: args.email,
         name: args.name,
         imageUrl: args.imageUrl,
-        role,
         createdAt: Date.now(),
       });
     }
-  },
-});
-
-export const hasSuperAdmin = query({
-  args: {},
-  handler: async (ctx) => {
-    const results = await ctx.db
-      .query("users")
-      .withIndex("by_role", (q) => q.eq("role", "super_admin"))
-      .take(1);
-    return results.length > 0;
   },
 });
 

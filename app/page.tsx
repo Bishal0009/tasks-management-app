@@ -1,7 +1,6 @@
 "use client";
 
-import { Authenticated, Unauthenticated, useQuery } from "convex/react";
-import { api } from "../convex/_generated/api";
+import { Authenticated, Unauthenticated } from "convex/react";
 import { UserButton } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -28,13 +27,11 @@ export default function Home() {
 }
 
 function UnauthenticatedRedirect() {
-  const hasSuperAdmin = useQuery(api.users.hasSuperAdmin);
   const router = useRouter();
 
   useEffect(() => {
-    if (hasSuperAdmin === undefined) return;
-    router.replace(hasSuperAdmin ? "/sign-in" : "/sign-up");
-  }, [hasSuperAdmin, router]);
+    router.replace("/sign-in");
+  }, [router]);
 
   return null;
 }
