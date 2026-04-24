@@ -111,6 +111,11 @@
       "sourceType": "github",
       "computedHash": "03365c7543539f6e6689a754e65b3d8ea023ba9d6ea12a9b5550462bf060af8c"
     },
+    "tiptap": {
+      "source": "ueberdosis/tiptap",
+      "sourceType": "github",
+      "computedHash": "60765ba8cb8a71503e6f14bb3a7a6ee77b34b1d98cd04b60b1bfcbb7c41ba9c7"
+    },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",
       "sourceType": "github",
