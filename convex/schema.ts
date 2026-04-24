@@ -12,6 +12,7 @@ export default defineSchema({
 
   workspaces: defineTable({
     name: v.string(),
+    type: v.union(v.literal("personal"), v.literal("team")),
     createdAt: v.number(),
   }),
 
