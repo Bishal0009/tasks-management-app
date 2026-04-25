@@ -10,6 +10,7 @@ import { Users } from "lucide-react";
 import { WorkspaceProvider, useWorkspace } from "../contexts/workspace-context";
 import { WorkspaceSwitcher } from "../components/workspace-switcher";
 import { ManageMembersSheet } from "../components/manage-members-sheet";
+import { TaskList } from "../components/task-list";
 
 export default function Home() {
   return (
@@ -76,10 +77,8 @@ function WorkspaceContent() {
   if (!activeWorkspace) return null;
 
   return (
-    <div className="max-w-lg mx-auto space-y-2">
-      <h2 className="text-xl font-semibold">{activeWorkspace.name}</h2>
-      <p className="text-sm text-muted-foreground capitalize">{activeWorkspace.type} workspace</p>
-      <p className="text-muted-foreground pt-4">App content goes here.</p>
+    <div className="max-w-4xl mx-auto w-full">
+      <TaskList />
     </div>
   );
 }
